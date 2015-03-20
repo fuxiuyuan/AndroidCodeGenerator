@@ -2,7 +2,7 @@
     <id>com.yunos.gamebox.ide.plugin</id>
     <name>AliAndroidCodeGenerator</name>
     <version>1.0</version>
-    <vendor email="xiuyuan.fuxy@alibaba-inc.com" url="http://www.alibaba-inc.com">Alibaba-inc</vendor>
+    <vendor email="fu_xiuyuan@hotmail.com" url="https://github.com/fuxiuyuan">xiuyuan.fuxy</vendor>
 
     <description><![CDATA[
       This plugin helps you to generate dumb android specific code.
