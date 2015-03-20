@@ -1,0 +1,51 @@
+<idea-plugin version="2">
+    <id>com.yunos.gamebox.ide.plugin</id>
+    <name>AliAndroidCodeGenerator</name>
+    <version>1.0</version>
+    <vendor email="xiuyuan.fuxy@alibaba-inc.com" url="http://www.alibaba-inc.com">Alibaba-inc</vendor>
+
+    <description><![CDATA[
+      This plugin helps you to generate dumb android specific code.
+      <ul>
+      <li>ViewHolder pattern</li>
+      <li>Create findView method</li>
+      </ul>
+      Please feel free to contact me and ask any questions or suggest some features
+      ]]></description>
+
+    <change-notes><![CDATA[
+      First release.<br>
+      <em>most HTML tags may be used</em>
+    ]]>
+    </change-notes>
+
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="131"/>
+
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
+
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action id="InitView" class="com.yunos.gamebox.ide.plugin.generate.initialize.InitViewAction"
+                text="Create initViews method">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
+    </actions>
+
+</idea-plugin>
