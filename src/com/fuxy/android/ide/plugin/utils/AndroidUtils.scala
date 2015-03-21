@@ -74,10 +74,10 @@ object AndroidUtils {
     for (implementsListType <- implementsListTypes) {
       val resolved = implementsListType.resolve()
       if (resolved != null && "android.os.Parcelable".equals(resolved.getQualifiedName())) {
-        true
+        return true
       }
     }
-    false
+    return false
   }
 
   @Nullable
