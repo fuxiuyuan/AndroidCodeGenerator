@@ -1,0 +1,2 @@
+# AndroidCodeGenerator
+Android studio 插件，可以自动生成findViewById方法和ViewHolder
