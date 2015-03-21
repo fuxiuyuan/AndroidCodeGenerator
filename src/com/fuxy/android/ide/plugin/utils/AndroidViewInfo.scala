@@ -9,11 +9,11 @@ class AndroidViewInfo(id:String,name:String) {
   var mName = initName()
 
   def getId():String = {
-    return mId
+    mId
   }
 
   def getName() : String = {
-    return mName
+    mName
   }
 
   def initId():String = {
@@ -39,19 +39,13 @@ class AndroidViewInfo(id:String,name:String) {
 
   def getFieldName() : String = {
     val words : Array[String] = getId().split("_")
-    val fieldName = new java.lang.StringBuilder()
-//    var i = 0;
-//    while(i<words.length) {
-//      val idTokens = words(i).split("\\.")
-//      val chars = idTokens(idTokens.length - 1).toCharArray()
-//      fieldName.append(chars)
-//      i = i + 1
-//    }
+    val fieldName = new StringBuilder()
+
     words.foreach((word:String)=>  {
       val idTokens = word.split("\\.")
-      val chars = idTokens(idTokens.length - 1).toCharArray()
-      fieldName.append(chars)
+      val chars = idTokens(idTokens.length - 1)
+      fieldName ++= chars
     });
-    return fieldName.toString()
+    fieldName.toString()
   }
 }

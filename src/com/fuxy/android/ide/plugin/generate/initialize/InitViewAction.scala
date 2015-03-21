@@ -16,15 +16,10 @@ class InitViewAction extends BaseAndroidGenerateCodeAction(null) {
   override protected def isValidForFile(@NotNull project: Project, @NotNull editor: Editor , @NotNull file: PsiFile ):Boolean = {
     //JavaPsiFacade.getInstance(project).findClass(editor.get)
     val f = PsiUtilBase.getPsiFileInEditor(editor, project)
-    var isActivityOrFragment = false;
     val currClass = getTargetClass(editor, f)
-    if(currClass != null) {
-      isActivityOrFragment = currClass.getSuperClass.getName.equals("Activity") ||
-        currClass.getSuperClass.getName.equals("Fragment")
-    }
     return super.isValidForFile(project, editor, file) &&
       null != AndroidUtils.getLayoutXMLFileFromCaret(editor, file) &&
-      isActivityOrFragment
+      (AndroidUtils.isClassSubclassOfActivity(currClass) || AndroidUtils.isClassSubclassOfFragment(currClass))
   }
 
   override def actionPerformedImpl(@NotNull project: Project ,@NotNull editor: Editor) {
@@ -32,13 +27,10 @@ class InitViewAction extends BaseAndroidGenerateCodeAction(null) {
     val layout = AndroidUtils.getLayoutXMLFileFromCaret(editor, f)
     if (layout == null) return;
     val ids = AndroidUtils.getIDsFromXML(layout)
-    var isActivityOrFragment = true;
     val currClass = getTargetClass(editor, f)
-    if(currClass != null) {
-      isActivityOrFragment = currClass.getSuperClass.getName.equals("Activity")
-    }
+    val isActivityOrFragment = AndroidUtils.isClassSubclassOfActivity(currClass)
     //todo picker
-    if (ids.size() > 0) {
+    if (ids.length > 0) {
       new InitViewWriter(isActivityOrFragment,getTargetClass(editor, f), ids,"Create initViews method")
         .execute()
     } else {

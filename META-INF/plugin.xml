@@ -46,6 +46,10 @@
                 text="Create initViews method">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
         </action>
+        <action id="ViewHolder" class="com.fuxy.android.ide.plugin.generate.holder.GenerateHolderAction"
+                text="Create view holder">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
     </actions>
 
 </idea-plugin>

@@ -14,8 +14,9 @@ import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlTag
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
-import java.util.ArrayList
-import java.util.List
+
+
+import scala.collection.mutable.ArrayBuffer
 
 
 class AndroidUtils {
@@ -35,17 +36,39 @@ object AndroidUtils {
     return null
   }
 
+  @Nullable
+  def findClass(project: Project,clazz:String): PsiClass = {
+    val facade = JavaPsiFacade.getInstance(project)
+    val findClass = facade.findClass(clazz, new EverythingGlobalScope(project))
+    findClass
+  }
+
+  @Nullable
   def findAdapterClass(project: Project): PsiClass = {
     val facade = JavaPsiFacade.getInstance(project)
     val adapterClass = facade.findClass("android.widget.Adapter", new EverythingGlobalScope(project))
     adapterClass
   }
 
+  @Nullable
   def isClassSubclassOfAdapter(cls: PsiClass): Boolean = {
     val adapterClass = findAdapterClass(cls.getProject)
     return !(adapterClass == null || !cls.isInheritor(adapterClass, true))
   }
 
+  @Nullable
+  def isClassSubclassOfActivity(cls: PsiClass): Boolean = {
+    val adapterClass = findClass(cls.getProject,"android.app.Activity")
+    return !(adapterClass == null || !cls.isInheritor(adapterClass, true))
+  }
+
+  @Nullable
+  def isClassSubclassOfFragment(cls: PsiClass): Boolean = {
+    val adapterClass = findClass(cls.getProject,"android.app.Fragment")
+    return !(adapterClass == null || !cls.isInheritor(adapterClass, true))
+  }
+
+  @Nullable
   def implementsParcelable(cls: PsiClass): Boolean = {
     val implementsListTypes = cls.getImplementsListTypes
     for (implementsListType <- implementsListTypes) {
@@ -57,6 +80,7 @@ object AndroidUtils {
     false
   }
 
+  @Nullable
   def findParcelableClass(@NotNull p: Project): PsiClass = {
     return JavaPsiFacade.getInstance(p)
       .findClass("android.os.Parcelable", new EverythingGlobalScope(p))
@@ -101,8 +125,8 @@ object AndroidUtils {
   }
 
   @NotNull
-  def getIDsFromXML(@NotNull f: PsiFile): List[AndroidViewInfo] = {
-    val ret = new ArrayList[AndroidViewInfo]();
+  def getIDsFromXML(@NotNull f: PsiFile): ArrayBuffer[AndroidViewInfo] = {
+    val ret = new ArrayBuffer[AndroidViewInfo]();
     f.accept(new XmlRecursiveElementVisitor() {
       override def visitElement(element: PsiElement) {
         super.visitElement(element);
@@ -116,7 +140,7 @@ object AndroidUtils {
           if (value == null) {
             return
           }
-          ret.add(new AndroidViewInfo(value, t.getName))
+          ret += (new AndroidViewInfo(value, t.getName))
         }
 
       }
