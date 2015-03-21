@@ -1,7 +1,7 @@
 /**
  * Created by fuxiuyuan on 15-3-20.
  */
-package com.yunos.gamebox.ide.plugin.utils
+package com.fuxy.android.ide.plugin.utils
 
 class AndroidViewInfo(id:String,name:String) {
 

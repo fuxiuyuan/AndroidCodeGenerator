@@ -2,11 +2,11 @@
  * Created by fuxiuyuan on 15-3-20.
  */
 
+package com.fuxy.android.ide.plugin.utils
 
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.{Sdk, ProjectJdkTable}
-
 import com.intellij.psi._
 import com.intellij.psi.search.EverythingGlobalScope
 import com.intellij.psi.search.FilenameIndex
@@ -14,10 +14,9 @@ import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlTag
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
-
 import java.util.ArrayList
 import java.util.List
-package com.yunos.gamebox.ide.plugin.utils {
+
 
 class AndroidUtils {
 
@@ -124,6 +123,4 @@ object AndroidUtils {
     })
     return ret
   }
-}
-
 }

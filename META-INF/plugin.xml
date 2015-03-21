@@ -1,5 +1,5 @@
 <idea-plugin version="2">
-    <id>com.yunos.gamebox.ide.plugin</id>
+    <id>com.fuxy.android.ide.plugin</id>
     <name>AliAndroidCodeGenerator</name>
     <version>1.0</version>
     <vendor email="fu_xiuyuan@hotmail.com" url="https://github.com/fuxiuyuan">xiuyuan.fuxy</vendor>
@@ -42,7 +42,7 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="InitView" class="com.yunos.gamebox.ide.plugin.generate.initialize.InitViewAction"
+        <action id="InitView" class="com.fuxy.android.ide.plugin.generate.initialize.InitViewAction"
                 text="Create initViews method">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
         </action>

@@ -1,4 +1,5 @@
-package com.yunos.gamebox.ide.plugin.generate
+package com.fuxy.android.ide.plugin.generate
+
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.command.WriteCommandAction.{Simple}
 import com.intellij.openapi.project.Project
