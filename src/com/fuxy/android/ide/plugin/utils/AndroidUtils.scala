@@ -7,9 +7,10 @@ package com.fuxy.android.ide.plugin.utils
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.{Sdk, ProjectJdkTable}
+import com.intellij.openapi.vcs.impl.DefaultFileIndexFacade
 import com.intellij.psi._
-import com.intellij.psi.search.EverythingGlobalScope
-import com.intellij.psi.search.FilenameIndex
+import com.intellij.psi.search.{ProjectScopeImpl, EverythingGlobalScope, FilenameIndex}
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlTag
 import org.jetbrains.annotations.NotNull
@@ -19,9 +20,9 @@ import org.jetbrains.annotations.Nullable
 import scala.collection.mutable.ArrayBuffer
 
 
-class AndroidUtils {
-
-}
+//class AndroidUtils {
+//
+//}
 
 object AndroidUtils {
 
@@ -99,6 +100,15 @@ object AndroidUtils {
     return findXmlResource(candidate2)
   }
 
+  def findXmlResourceByName(@NotNull project: Project,@NotNull fileName:String): PsiFile = {
+    val foundFiles = FilenameIndex
+      .getFilesByName(project, fileName, new ProjectScopeImpl(project,new DefaultFileIndexFacade(project)))
+    if(foundFiles.length <=0) {
+      println("not found %s file!",fileName)
+      return null;
+    }
+    foundFiles(0)
+  }
   @Nullable
   def findXmlResource(elementAt: PsiElement): PsiFile = {
     if (elementAt == null) {
@@ -117,7 +127,8 @@ object AndroidUtils {
     val prj = elementAt.getProject()
     val name = String.format("%s.xml", elementAt.getText)
     val foundFiles = FilenameIndex
-      .getFilesByName(prj, name, new EverythingGlobalScope(prj))
+      .getFilesByName(prj, name,new ProjectScopeImpl(prj,new DefaultFileIndexFacade(prj)) )
+      // new EverythingGlobalScope(prj)
     if (foundFiles.length <= 0) {
       return null
     }
@@ -141,10 +152,50 @@ object AndroidUtils {
             return
           }
           ret += (new AndroidViewInfo(value, t.getName))
+          println("value:%s, name:%s",value,t.getName)
         }
 
       }
     })
     return ret
+  }
+
+  @NotNull
+  def getStringFromXML(@NotNull f: PsiFile): ArrayBuffer[AndroidStringInfo] = {
+    val ret = new ArrayBuffer[AndroidStringInfo]();
+    f.accept(new XmlRecursiveElementVisitor() {
+      override def visitElement(element: PsiElement) {
+        super.visitElement(element);
+        if (element.isInstanceOf[XmlTag]) {
+          val t = element.asInstanceOf[XmlTag]
+          val id = t.getAttribute("name", null)
+          if (id == null) {
+            return
+          }
+          val name = id.getValue()
+          if (name == null) {
+            return
+          }
+          ret += (new AndroidStringInfo(t.getValue.getText,name))
+        }
+
+      }
+    })
+    return ret
+  }
+
+  @Nullable
+  def getTargetClass(editor: Editor, file: PsiFile): PsiClass = {
+    val offset = editor.getCaretModel().getOffset();
+    val element = file.findElementAt(offset);
+    if(element == null) {
+      return null;
+    } else {
+      val target = PsiTreeUtil.getParentOfType(element,classOf[PsiClass]).asInstanceOf[PsiClass]
+      if(!target.isInstanceOf[SyntheticElement]) {
+        return target
+      }
+    }
+    return null
   }
 }
